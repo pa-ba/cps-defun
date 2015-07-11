@@ -55,10 +55,10 @@ where "x ⇓[ e ] y" := (eval x e y).
 (** * Abstract machine *)
 
 Inductive CONT : Set :=
-| C1 : Expr -> Env -> CONT -> CONT
-| C2 : CONT -> nat -> CONT
-| C3 : Expr -> Env -> CONT -> CONT
-| C4 : Expr -> Env -> CONT -> CONT
+| NEXT : Expr -> Env -> CONT -> CONT
+| ADD : CONT -> nat -> CONT
+| FUN : Expr -> Env -> CONT -> CONT
+| ARG : Expr -> Env -> CONT -> CONT
 | HALT : CONT
 .
 
@@ -76,14 +76,14 @@ Notation "⟪ c , v ⟫" := (apply c v).
 Reserved Notation "x ==> y" (at level 80, no associativity).
 Inductive AM : Conf -> Conf -> Prop :=
 | am_val n e c : ⟨Val n, e, c⟩ ==> ⟪c, Num n⟫
-| am_add x y e c : ⟨Add x y, e, c⟩ ==> ⟨x, e, C1 y e c⟩
+| am_add x y e c : ⟨Add x y, e, c⟩ ==> ⟨x, e, NEXT y e c⟩
 | am_var i e c v : nth e i = Some v -> ⟨Var i, e, c⟩ ==> ⟪c, v⟫
 | am_abs x e c : ⟨Abs x, e, c⟩ ==> ⟪c, Clo x e⟫
-| am_app x y e c : ⟨App x y, e, c⟩ ==> ⟨x, e, C4 y e c⟩
-| am_c1 y e c n : ⟪C1 y e c, Num n⟫ ==> ⟨y, e, C2 c n⟩
-| am_c2 c n m : ⟪C2 c n, Num m⟫ ==> ⟪c, Num (n+m)⟫
-| am_c3 x' e' c v : ⟪C3 x' e' c, v⟫ ==> ⟨x', v::e', c⟩
-| am_c4 y e c x' e' : ⟪C4 y e c, Clo x' e'⟫ ==> ⟨y, e, C3 x' e' c⟩
+| am_app x y e c : ⟨App x y, e, c⟩ ==> ⟨x, e, ARG y e c⟩
+| am_NEXT y e c n : ⟪NEXT y e c, Num n⟫ ==> ⟨y, e, ADD c n⟩
+| am_ADD c n m : ⟪ADD c n, Num m⟫ ==> ⟪c, Num (n+m)⟫
+| am_FUN x' e' c v : ⟪FUN x' e' c, v⟫ ==> ⟨x', v::e', c⟩
+| am_ARG y e c x' e' : ⟪ARG y e c, Clo x' e'⟫ ==> ⟨y, e, FUN x' e' c⟩
 where "x ==> y" := (AM x y).
 
 
@@ -123,14 +123,14 @@ Proof.
 
   begin
     ⟪c, Num (n + m)⟫.
-  <== { apply am_c2 }
-      ⟪C2 c n, Num m⟫.
+  <== { apply am_ADD }
+      ⟪ADD c n, Num m⟫.
   <<= { apply IHeval2 }
-      ⟨y, e, C2 c n⟩.
-  <== { apply am_c1 }
-      ⟪C1 y e c, Num n⟫.
+      ⟨y, e, ADD c n⟩.
+  <== { apply am_NEXT }
+      ⟪NEXT y e c, Num n⟫.
   <<= { apply IHeval1 }
-      ⟨x, e, C1 y e c⟩.
+      ⟨x, e, NEXT y e c⟩.
   <== {apply am_add}
       ⟨Add x y, e, c ⟩.
   [].
@@ -157,14 +157,14 @@ Proof.
     ⟪c, w⟫.
   <<= { apply IHeval3 }
     ⟨x', (v::e'), c⟩.
-  <== { apply am_c3 }
-    ⟪C3 x' e' c, v⟫.
+  <== { apply am_FUN }
+    ⟪FUN x' e' c, v⟫.
   <<= {apply IHeval2}
-    ⟨y, e, C3 x' e' c⟩.
-  <== {apply am_c4}
-    ⟪C4 y e c, Clo x' e'⟫.
+    ⟨y, e, FUN x' e' c⟩.
+  <== {apply am_ARG}
+    ⟪ARG y e c, Clo x' e'⟫.
   <<= {apply IHeval1}
-    ⟨x, e, C4 y e c⟩.
+    ⟨x, e, ARG y e c⟩.
   <== {apply am_app}
     ⟨App x y, e, c⟩.
   [].
@@ -173,7 +173,7 @@ Qed.
 (** * Soundness *)
 
 Lemma determ_am : determ AM.
-  intros C C1 C2 V. induction V; intro V'; inversion V'; subst; congruence.
+  intros C c1 c2 V. induction V; intro V'; inversion V'; subst; congruence.
 Qed.
   
 
