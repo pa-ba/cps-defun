@@ -1,5 +1,6 @@
-(** Calculation of a compiler for the call-by-value lambda calculus +
-arithmetic. *)
+(** Calculation of an abstract machine for the call-by-value lambda
+calculus + arithmetic. The resulting abstract machine coincides with
+the CEK machine. *)
 
 Require Import List.
 Require Import ListIndex.
