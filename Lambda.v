@@ -1,6 +1,6 @@
 (** Calculation of an abstract machine for the call-by-value lambda
 calculus + arithmetic. The resulting abstract machine coincides with
-the CEK machine. *)
+the CEK machine (extended with arithmetic). *)
 
 Require Import List.
 Require Import ListIndex.
@@ -99,7 +99,7 @@ End AM.
 Module AMCalc := Calculation AM.
 Import AMCalc.
 
-(** Specification of the compiler *)
+(** Specification of the abstract machine *)
 
 Theorem spec x e r c : x ⇓[e] r -> ⟨x, e, c⟩ =>> ⟪c, r⟫.
 
@@ -110,7 +110,7 @@ Proof.
   generalize dependent c.
   induction H;intros.
 
-(** Calculation of the compiler *)
+(** Calculation of the abstract machine *)
 
 (** - [Val n ⇓[e] Num n]: *)
 

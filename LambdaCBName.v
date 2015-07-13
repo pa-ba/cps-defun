@@ -104,7 +104,7 @@ End AM.
 Module AMCalc := Calculation AM.
 Import AMCalc.
 
-(** Specification of the compiler *)
+(** Specification of the abstract machine *)
 
 Theorem spec x e r c : x ⇓[e] r -> ⟨x, e, c⟩ =>> ⟪c, r⟫.
 
@@ -115,7 +115,7 @@ Proof.
   generalize dependent c.
   induction H;intros.
 
-(** Calculation of the compiler *)
+(** Calculation of the abstract machine *)
 
 (** - [Val n ⇓[e] Num n]: *)
 
