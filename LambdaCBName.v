@@ -1,6 +1,7 @@
 (** Calculation of an abstract machine for the call-by-name lambda
-calculus. The resulting abstract machine coincides with the Krivine
-machine. *)
+calculus. The resulting abstract machine (almost) coincides with the
+Krivine machine. The relation to the Krivine machine is explained
+below. *)
 
 Require Import List.
 Require Import ListIndex.
@@ -76,6 +77,13 @@ Inductive AM : Conf -> Conf -> Prop :=
 | am_app x y e c : ⟨App x y, e, c⟩ ==> ⟨x, e, APP y e c⟩
 | am_APP y e c x' e' : ⟪APP y e c, Clo x' e'⟫ ==> ⟨x', thunk y e::e', c⟩
 where "x ==> y" := (AM x y).
+
+(** The only difference between the above machine and the Krivine
+machine is that the former produces via the rule [am_abs] a state of
+the form [⟪...⟫], which is then immediately consumed by the rule
+[am_APP]. These two rules [am_abs] and [am_APP] can therefore be fused
+into a single rule. The resulting machine is exactly coincides with
+the Krivine machine. *)
 
 
 (** * Calculation *)
