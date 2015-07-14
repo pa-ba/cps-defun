@@ -26,8 +26,6 @@ Inductive CONT : Set :=
 | HALT : CONT
 .
 
-(** * Virtual Machine *)
-
 Inductive Conf : Set := 
 | eval'' : Expr -> CONT -> Conf
 | apply : CONT -> nat -> Conf.
@@ -57,7 +55,7 @@ End AM.
 Module AMCalc := Calculation AM.
 Import AMCalc.
 
-(** Specification of the compiler *)
+(** Specification of the abstract machine *)
 
 Theorem spec x c : ⟨x, c⟩ =>> ⟪c, eval x⟫.
 
@@ -68,7 +66,7 @@ Proof.
   generalize dependent c.
   induction x;intros.
 
-(** Calculation of the compiler *)
+(** Calculation of the abstract machine *)
 
   begin
   ⟪c, eval (Val n)⟫.

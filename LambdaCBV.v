@@ -50,8 +50,6 @@ Inductive CONT : Set :=
 | HALT : CONT
 .
 
-(** * Virtual Machine *)
-
 Inductive Conf : Set := 
 | eval'' : Expr -> Env -> CONT -> Conf
 | apply : CONT -> Value -> Conf.

@@ -69,15 +69,12 @@ Inductive CONT : Set :=
 | HALT : CONT
 .
 
-(** * Virtual Machine *)
-
 Inductive Conf : Set := 
 | eval'' : Expr -> Env -> CONT -> Conf
 | apply : CONT -> Value -> Conf.
 
 Notation "⟨ x , e , c ⟩" := (eval'' x e c).
 Notation "⟪ c , v ⟫" := (apply c v).
-
 
 
 Reserved Notation "x ==> y" (at level 80, no associativity).
