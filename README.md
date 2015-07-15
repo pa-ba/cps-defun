@@ -1,4 +1,4 @@
-# Cutting Out Continuations
+# Cutting Out Continuations [![Build Status](https://travis-ci.org/pa-ba/cps-defun.svg?branch=master)](https://travis-ci.org/pa-ba/cps-defun)
 
 This repository contains the supplementary material for the paper
 "Cutting Out Continuations" by Patrick Bahr and Graham Hutton.  The
@@ -72,8 +72,12 @@ auxiliary concepts ([Heap.v](Heap.v), [ListIndex.v](ListIndex.v)).
 
 ### Proof Checking
 
-To check and compile the complete Coq development, you can use the
-`Makefile`:
+The complete Coq development in this repository is proof-checked
+automatically. The current status is:
+[![Build Status](https://travis-ci.org/pa-ba/cps-defun.svg?branch=master)](https://travis-ci.org/pa-ba/cps-defun)
+
+To check and compile the complete Coq development yourself, you can
+use the `Makefile`:
 
 ```shell
 > make
