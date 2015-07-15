@@ -167,11 +167,6 @@ Proof.
   [].
 
   begin
-    match eval (Catch x1 x2) q with
-    | (Some n, q') => ⟪c, q', n⟫
-    | (None, q') => ⟨|c, q'|⟩
-    end.
-  = {reflexivity}
       match eval x1 q with
       | (Some n, q') => ⟪c, q', n⟫
       | (None, q')   => match eval x2 q' with
