@@ -56,7 +56,7 @@ where "x ⇓[ e ] y" := (eval x e y).
 
 Inductive CONT : Set :=
 | NEXT : Expr -> Env -> CONT -> CONT
-| ADD : CONT -> nat -> CONT
+| ADD : nat -> CONT -> CONT
 | FUN : Expr -> Env -> CONT -> CONT
 | ARG : Expr -> Env -> CONT -> CONT
 | HALT : CONT
@@ -78,8 +78,8 @@ Inductive AM : Conf -> Conf -> Prop :=
 | am_var i e c v : nth e i = Some v -> ⟨Var i, e, c⟩ ==> ⟪c, v⟫
 | am_abs x e c : ⟨Abs x, e, c⟩ ==> ⟪c, Clo x e⟫
 | am_app x y e c : ⟨App x y, e, c⟩ ==> ⟨x, e, ARG y e c⟩
-| am_NEXT y e c n : ⟪NEXT y e c, Num n⟫ ==> ⟨y, e, ADD c n⟩
-| am_ADD c n m : ⟪ADD c n, Num m⟫ ==> ⟪c, Num (n+m)⟫
+| am_NEXT y e c n : ⟪NEXT y e c, Num n⟫ ==> ⟨y, e, ADD n c⟩
+| am_ADD c n m : ⟪ADD n c, Num m⟫ ==> ⟪c, Num (n+m)⟫
 | am_FUN x' e' c v : ⟪FUN x' e' c, v⟫ ==> ⟨x', v::e', c⟩
 | am_ARG y e c x' e' : ⟪ARG y e c, Clo x' e'⟫ ==> ⟨y, e, FUN x' e' c⟩
 where "x ==> y" := (AM x y).
@@ -122,9 +122,9 @@ Proof.
   begin
     ⟪c, Num (n + m)⟫.
   <== { apply am_ADD }
-      ⟪ADD c n, Num m⟫.
+      ⟪ADD n c, Num m⟫.
   <<= { apply IHeval2 }
-      ⟨y, e, ADD c n⟩.
+      ⟨y, e, ADD n c⟩.
   <== { apply am_NEXT }
       ⟪NEXT y e c, Num n⟫.
   <<= { apply IHeval1 }

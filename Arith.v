@@ -22,7 +22,7 @@ Fixpoint eval (e: Expr) : nat :=
 
 Inductive CONT : Set :=
 | NEXT : Expr -> CONT -> CONT
-| ADD : CONT -> nat -> CONT
+| ADD : nat -> CONT -> CONT
 | HALT : CONT
 .
 
@@ -39,8 +39,8 @@ Reserved Notation "x ==> y" (at level 80, no associativity).
 Inductive AM : Conf -> Conf -> Prop :=
 | am_val n c : ⟨Val n, c⟩ ==> ⟪c, n⟫
 | am_add x y c : ⟨Add x y, c⟩ ==> ⟨x, NEXT y c⟩
-| am_NEXT y c n : ⟪NEXT y c, n⟫ ==> ⟨y, ADD c n⟩
-| am_ADD c n m : ⟪ADD c n, m⟫ ==> ⟪c, n+m⟫
+| am_NEXT y c n : ⟪NEXT y c, n⟫ ==> ⟨y, ADD n c⟩
+| am_ADD c n m : ⟪ADD n c, m⟫ ==> ⟪c, n+m⟫
 where "x ==> y" := (AM x y).
 
 
@@ -81,9 +81,9 @@ Proof.
   =   {reflexivity}
     ⟪c, eval x1 + eval x2 ⟫.
   <== { apply am_ADD }
-      ⟪ADD c (eval x1), eval x2⟫.
+      ⟪ADD (eval x1) c, eval x2⟫.
   <<= { apply IHx2 }
-      ⟨x2, ADD c (eval x1)⟩.
+      ⟨x2, ADD (eval x1) c⟩.
   <== { apply am_NEXT }
       ⟪NEXT x2 c, eval x1⟫.
   <<= { apply IHx1 }
