@@ -83,7 +83,7 @@ Import AMCalc.
 
 Theorem spec x c : ⟨x, c⟩ =>> match eval x with
                               | Some n => ⟪c, n⟫
-                              | none   => ⟨|c |⟩
+                              | None   => ⟨|c |⟩
                               end.
 (** Setup the induction proof *)
 
@@ -173,7 +173,6 @@ Proof.
     | Some n => ⟪c, n ⟫
     | None => ⟨|c |⟩
     end.
-  simpl.
   = {reflexivity}
       match eval x1 with
       | Some n => ⟪c, n⟫
