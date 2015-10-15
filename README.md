@@ -1,7 +1,7 @@
 # Cutting Out Continuations [![Build Status](https://travis-ci.org/pa-ba/cps-defun.svg?branch=master)](https://travis-ci.org/pa-ba/cps-defun)
 
 This repository contains the supplementary material for the paper
-"Cutting Out Continuations" by Patrick Bahr and Graham Hutton.  The
+"Cutting Out Continuations" by Graham Hutton and Patrick Bahr.  The
 material includes Coq formalisations of all calculations in the
 paper. In addition, we also include Coq formalisations for
 calculations that were mentioned but not explicitly carried out in the
@@ -57,6 +57,15 @@ In addition we also include calculations for the following languages:
    calculus + arithmetic
  - [LambdaCBNeedArith.v](LambdaCBNeedArith.v): call-by-need lambda
    calculus + arithmetic
+ - [Exceptions.v](Exceptions.v): arithmetic expressions with exceptions
+ - [ExceptionsTwoCont.v](ExceptionsTwoCont.v): arithmetic expressions
+   with exceptions (using a specification with two continuations)
+ - [StateGlobal.v](StateGlobal.v): extension of
+   [Exceptions.v](Exceptions.v) with global state
+ - [StateLocal.v](StateLocal.v): extension of
+   [Exceptions.v](Exceptions.v) with local state
+ - [Loop.v](Loop.v): arithmetic expressions with state and unbounded
+   loops
 
 The remaining files are used to define the Coq tactics to support
 reasoning in calculation style ([Tactics.v](Tactics.v)) and to specify
