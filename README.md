@@ -1,11 +1,11 @@
 # Cutting Out Continuations [![Build Status](https://travis-ci.org/pa-ba/cps-defun.svg?branch=master)](https://travis-ci.org/pa-ba/cps-defun)
 
 This repository contains the supplementary material for the paper
-"Cutting Out Continuations" by Graham Hutton and Patrick Bahr.  The
-material includes Coq formalisations of all calculations in the
-paper. In addition, we also include Coq formalisations for
-calculations that were mentioned but not explicitly carried out in the
-paper.
+["Cutting Out Continuations"](http://www.itu.dk/~paba/pubs/files/hutton15cpsdefun-preprint.pdf)
+by Graham Hutton and Patrick Bahr.  The material includes Coq
+formalisations of all calculations in the paper. In addition, we also
+include Coq formalisations for calculations that were mentioned but
+not explicitly carried out in the paper.
 
 ## Paper vs. Coq Proofs
 
